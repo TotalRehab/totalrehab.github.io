@@ -6,7 +6,38 @@ h1{
 	text-align: center;
 }
 
-.sheep{
-	height:120px;
-	width:auto;
+h2{
+	text-align: center;
+}
+
+#drugs{
+    width: 55%;
+    background-color: #CCCCCC;
+  
+       -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+            border-radius: 10px; /* future proofing */
+     -khtml-border-radius: 10px; /* for old Konqueror browsers */
+  
+    -moz-box-shadow:		2px 0 50px #000000;
+    -webkit-box-shadow:	2px 0 50px #000000;
+    box-shadow:					2px 0 50px #000000;
+}
+
+h3{
+	text-align: center;
+}
+
+#dealers{
+    width: 55%;
+    background-color: #CCCCCC;
+  
+       -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+            border-radius: 10px; /* future proofing */
+     -khtml-border-radius: 10px; /* for old Konqueror browsers */
+  
+    -moz-box-shadow:		2px 0 50px #000000;
+    -webkit-box-shadow:	2px 0 50px #000000;
+    box-shadow:					2px 0 50px #000000;
 }
