@@ -12,9 +12,33 @@
 		Total Rehab
 	</h1>
 	
-	<div id='sheep' class='sheep'>
-		<img src='http://www.tvweek.com/blogs/tvbizwire/bill-cosby.jpg'/>
-	</div>
+	<table cellpadding='80' align='center'>
+		<tr>
+			<td id='drugs'>
+				<h2><b>Drugs</b></h2>
+				<div id='money'>Money: 0</div><br /><br />
+				<div id='cocaine'>Cocaine: 0</div><br />
+				<div id='cannabis'>Cannabis: 0</div><br />
+				<div id='heroin'>Heroin: 0</div><br />
+				<div id='mdma'>MDMA: 0</div><br />
+				<div id='meth'>Meth: 0</div><br /><br /><br />
+			</td>
+			<td id='dealers'>
+				<h3><b>Dealers</b></h3>
+				<div id='nelson'>Nelson<br />
+					<input type='text' id='nelsoncannabistb'/><button type='button' onClick='buy("cannabis", parseFloat($("#nelsoncannabistb").val()), "nelson");'>Buy Cannabis</button>
+				</div><br />
+	
+				<div id='blake'>Blake<br />
+					<input type='text' id='blakecocainetb'/><button type='button' onClick='buy("cocaine", parseFloat($("#blakecocainetb").val()), "blake");'>Buy Cocaine</button><br />
+					<input type='text' id='blakecannabistb'/><button type='button' onClick='buy("cannabis", parseFloat($("#blakecannabistb").val()), "blake");'>Buy Cannabis</button><br />
+					<input type='text' id='blakeherointb'/><button type='button' onClick='buy("heroin", parseFloat($("#blakeherointb").val()), "blake");'>Buy Cannabis</button><br />
+				</div>
+				
+			</td>
+		</tr>
+	</table>
+		
 	
 	<!-- 
 	
@@ -22,7 +46,7 @@
 		
 		GUI
 		Farm/Lab
-		Pharmacy for buying Lab Stuff
+		Pharmacy for buying Lab Goods
 		Doing Drugs
 		Dynamic Random Pricing
 		Quests
@@ -42,7 +66,25 @@
 	
 	console.log("TOTAL REHAB | 2014 --- Sebastien Aurelien and Andrew McGuire");
 	
-	var drugs, money, buy, inv, buyeffects, effects, time, mmyyyy, month, year, tx, bought, sold, round, foodprice, check, hungersurvive, loadstats, doHunger, dealer
+	var drugs, money, buy, inv, buyeffects, effects, time, mmyyyy, month, year, tx, bought, sold, round, foodprice, check, hungersurvive, loadstats, doHunger, dealer, refresh
+	
+	var refreshTimer = setTimeout(refresh, 1)
+	
+	function refresh(){
+		$('#money').text('Money: '+ money.toString());
+		$('#cocaine').text('Cocaine: ' + inv.cocaine.toString());
+		$('#cannabis').text('Cannabis: ' + inv.cannabis.toString());
+		$('#heroin').text('Heroin: ' + inv.heroin.toString());
+		$('#mdma').text('MDMA: ' + inv.mdma.toString());
+		$('#meth').text('Meth: ' + inv.meth.toString());
+		$('#cocaine').text('Cocaine: ' + inv.cocaine.toString());
+		$('#cocaine').text('Cocaine: ' + inv.cocaine.toString());
+		refreshTimer = setTimeout(refresh, 1)
+	}
+	
+	function abortRefresh(){
+		abortTimer(refreshTimer)
+	}
 	
 	function dodrug(d, q, m){
 		
@@ -514,7 +556,7 @@
 		tx = $.jStorage.get('tx');
 		bought = $.jStorage.get('bought');
 		sold = $.jStorage.get('sold');
-	} 
+	}
 	
 		// loads saved data
 	
