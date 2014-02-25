@@ -112,6 +112,11 @@
 	}
 	
 	function refresh(){
+		
+		if(money==69){
+			updateMsg='69 huehhueueuehuehuehuehuehue';
+		}
+		
 		$('#money').text('Money: '+ money.toString());
 		$('#cocaine').text('Cocaine: ' + inv.cocaine.toString());
 		$('#marijuana').text('Marijuana: ' + inv.marijuana.toString());
@@ -119,6 +124,7 @@
 		$('#mdma').text('MDMA: ' + inv.mdma.toString());
 		$('#meth').text('Meth: ' + inv.meth.toString());
 		$('#updateMsg').text(updateMsg);
+		
 		refreshTimer = setTimeout(refresh, 1)
 	}
 	
