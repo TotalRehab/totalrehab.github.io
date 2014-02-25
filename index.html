@@ -15,6 +15,8 @@
 	
 	<div align='center' id='updateMsg'></div>
 	
+	<div><button id='save' onClick='save();'>Save!</button><button id='load' onClick='load();'>Load!</button></div>
+	
 	<table cellpadding='80' align='center'>
 		<tr>
 			<td id='drugs'>
@@ -41,7 +43,7 @@
 				<div id='lorenzo'>Lorenzo<br />
 					<input type='text' id='lorenzococainetb' placeholder='Cocaine: Amount (g)'/><button type='button' onClick='buy("cocaine", parseFloat($("#lorenzococainetb").val()), "lorenzo");'>Buy Cocaine</button><br />
 					<input type='text' id='lorenzoherointb' placeholder='Heroin: Amount (g)'/><button type='button' onClick='buy("heroin", parseFloat($("#lorenzoherointb").val()), "lorenzo");'>Buy Heroin</button><br />
-					<input type='text' id='lorenzomdmatb' placeholder='MDMA: Amount (g)'/><button type='button' onClick='buy("mdma", parseFloat($("#lorenzodmatb").val()), "lorenzo");'>Buy MDMA</button><br />
+					<input type='text' id='lorenzomdmatb' placeholder='MDMA: Amount (g)'/><button type='button' onClick='buy("mdma", parseFloat($("#lorenzomdmatb").val()), "lorenzo");'>Buy MDMA</button><br />
 					<input type='text' id='lorenzomethtb' placeholder='Meth: Amount (g)'/><button type='button' onClick='buy("meth", parseFloat($("#lorenzomethtb").val()), "lorenzo");'>Buy Meth</button><br />
 				</div>
 				
@@ -80,9 +82,7 @@
 	
 	console.log("TOTAL REHAB | v0.0.1dev");
 	
-	var drugs, money, buy, inv, buyeffects, effects, time, mmyyyy, month, year, tx, bought, sold, round, foodprice, check, hungersurvive, loadstats, doHunger, dealer, refresh, randomSlang, updateMsg, gang
-	
-	money = 250;
+	var drugs, money, buy, inv, buyeffects, effects, time, mmyyyy, month, year, tx, bought, sold, round, foodprice, check, hungersurvive, loadstats, doHunger, dealer, refresh, randomSlang, updateMsg, gang, workAtMcDonalds
 	
 	gang={
 		pirus:{
@@ -569,6 +569,10 @@
 			}
 	}
 	} */
+	
+	function workAtMconalds(){
+		money+=35;
+	}
 
 	function save(){
 		$.jStorage.set('inv', inv);
