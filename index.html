@@ -2,38 +2,50 @@
 <hmtl>
 	<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 	<script src="http://rawgithub.com/andris9/jStorage/master/jstorage.js"></script>
-	<title>Total Rehab (GitHub)</title>
+	<title>Total Rehab</title>
 	<head>
 		<link rel="stylesheet" type="text/css" href="style.css" />
 		<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans:800,400' rel='stylesheet' type='text/css'>
 	</head>
 	
 	<h1>
 		Total Rehab
 	</h1>
 	
+	<div align='center' id='updateMsg'></div>
+	
 	<table cellpadding='80' align='center'>
 		<tr>
 			<td id='drugs'>
-				<h2><b>Drugs</b></h2>
+				<h2>Drugs</h2>
 				<div id='money'>Money: 0</div><br /><br />
 				<div id='cocaine'>Cocaine: 0</div><br />
-				<div id='cannabis'>Cannabis: 0</div><br />
+				<div id='marijuana'>Marijuana: 0</div><br />
 				<div id='heroin'>Heroin: 0</div><br />
 				<div id='mdma'>MDMA: 0</div><br />
 				<div id='meth'>Meth: 0</div><br /><br /><br />
 			</td>
 			<td id='dealers'>
-				<h3><b>Dealers</b></h3>
+				<h3>Dealers</h3>
 				<div id='nelson'>Nelson<br />
-					<input type='text' id='nelsoncannabistb'/><button type='button' onClick='buy("cannabis", parseFloat($("#nelsoncannabistb").val()), "nelson");'>Buy Cannabis</button>
+					<input type='text' id='nelsonmarijuanatb' placeholder='Marijuana: Amount (g)'/><button type='button' onClick='buy("marijuana", parseFloat($("#nelsonmarijuanatb").val()), "nelson");'>Buy Marijuana</button>
 				</div><br />
 	
 				<div id='blake'>Blake<br />
-					<input type='text' id='blakecocainetb'/><button type='button' onClick='buy("cocaine", parseFloat($("#blakecocainetb").val()), "blake");'>Buy Cocaine</button><br />
-					<input type='text' id='blakecannabistb'/><button type='button' onClick='buy("cannabis", parseFloat($("#blakecannabistb").val()), "blake");'>Buy Cannabis</button><br />
-					<input type='text' id='blakeherointb'/><button type='button' onClick='buy("heroin", parseFloat($("#blakeherointb").val()), "blake");'>Buy Cannabis</button><br />
+					<input type='text' id='blakecocainetb' placeholder='Cocaine: Amount (g)'/><button type='button' onClick='buy("cocaine", parseFloat($("#blakecocainetb").val()), "blake");'>Buy Cocaine</button><br />
+					<input type='text' id='blakemarijuanatb' placeholder='Marijuana: Amount (g)'/><button type='button' onClick='buy("marijuana", parseFloat($("#blakemarijuanatb").val()), "blake");'>Buy Marijuana</button><br />
+					<input type='text' id='blakeherointb' placeholder='Heroin: Amount (g)'/><button type='button' onClick='buy("heroin", parseFloat($("#blakeherointb").val()), "blake");'>Buy Heroin</button><br />
 				</div>
+				
+				<div id='lorenzo'>Lorenzo<br />
+					<input type='text' id='lorenzococainetb' placeholder='Cocaine: Amount (g)'/><button type='button' onClick='buy("cocaine", parseFloat($("#lorenzococainetb").val()), "lorenzo");'>Buy Cocaine</button><br />
+					<input type='text' id='lorenzoherointb' placeholder='Heroin: Amount (g)'/><button type='button' onClick='buy("heroin", parseFloat($("#lorenzoherointb").val()), "lorenzo");'>Buy Heroin</button><br />
+					<input type='text' id='lorenzomdmatb' placeholder='MDMA: Amount (g)'/><button type='button' onClick='buy("mdma", parseFloat($("#lorenzodmatb").val()), "lorenzo");'>Buy MDMA</button><br />
+					<input type='text' id='lorenzomethtb' placeholder='Meth: Amount (g)'/><button type='button' onClick='buy("meth", parseFloat($("#lorenzomethtb").val()), "lorenzo");'>Buy Meth</button><br />
+				</div>
+				
+				<div id=''>
 				
 			</td>
 		</tr>
@@ -64,21 +76,47 @@
 	
 	<script type="text/javascript">
 	
-	console.log("TOTAL REHAB | 2014 --- Sebastien Aurelien and Andrew McGuire");
+	$("td").attr("valign","top")
 	
-	var drugs, money, buy, inv, buyeffects, effects, time, mmyyyy, month, year, tx, bought, sold, round, foodprice, check, hungersurvive, loadstats, doHunger, dealer, refresh
+	console.log("TOTAL REHAB | v0.0.1dev");
+	
+	var drugs, money, buy, inv, buyeffects, effects, time, mmyyyy, month, year, tx, bought, sold, round, foodprice, check, hungersurvive, loadstats, doHunger, dealer, refresh, randomSlang, updateMsg, gang
+	
+	gang={
+		pirus:{
+			members:[],
+			
+		},
+		crips:0,
+		fletch:0,
+		orangejuice:0,
+		den:0,
+	}
+	
+	function getQueryVariable( variable ){
+		var query = window.location.search.substring(1);
+		var vars = query.split("+");
+		for (var i=0;i<vars.length;i++) {
+			var pair = vars[i].split("=");
+			if(pair[0] == variable){return pair[1];}
+		}
+		return(false);
+	}
 	
 	var refreshTimer = setTimeout(refresh, 1)
+	
+	function randomSlang(d){
+		return drugs[d].slang[Math.floor(Math.random()*(drugs[d].slang.length))];
+	}
 	
 	function refresh(){
 		$('#money').text('Money: '+ money.toString());
 		$('#cocaine').text('Cocaine: ' + inv.cocaine.toString());
-		$('#cannabis').text('Cannabis: ' + inv.cannabis.toString());
+		$('#marijuana').text('Marijuana: ' + inv.marijuana.toString());
 		$('#heroin').text('Heroin: ' + inv.heroin.toString());
 		$('#mdma').text('MDMA: ' + inv.mdma.toString());
 		$('#meth').text('Meth: ' + inv.meth.toString());
-		$('#cocaine').text('Cocaine: ' + inv.cocaine.toString());
-		$('#cocaine').text('Cocaine: ' + inv.cocaine.toString());
+		$('#updateMsg').text(updateMsg);
 		refreshTimer = setTimeout(refresh, 1)
 	}
 	
@@ -93,7 +131,7 @@
 	dealer={
 		nelson:{
 			cocaine:0,
-			cannabis:20,
+			marijuana:20,
 			heroin:0,
 			mdma:0,
 			meth:0,
@@ -102,7 +140,7 @@
 			},
 			buyeffects:{
 				cocaine:[1,0],
-				cannabis:[1,0],
+				marijuana:[1,0],
 				heroin:[1,0],
 				mdma:[1,0],
 				meth:[1,0],
@@ -110,7 +148,7 @@
 		},
 		blake:{
 			cocaine:190,
-			cannabis:18,
+			marijuana:18,
 			heroin:260,
 			mdma:0,
 			meth:0,
@@ -119,7 +157,7 @@
 			},
 			buyeffects:{
 				cocaine:[1,0],
-				cannabis:[1,0],
+				marijuana:[1,0],
 				heroin:[1,0],
 				mdma:[1,0],
 				meth:[1,0],
@@ -127,7 +165,7 @@
 		},
 		lorenzo:{
 			cocaine:185,
-			cannabis:0,
+			marijuana:0,
 			heroin:315,
 			mdma:45,
 			meth:400,
@@ -136,7 +174,7 @@
 			},
 			buyeffects:{
 				cocaine:[1,0],
-				cannabis:[1,0],
+				marijuana:[1,0],
 				heroin:[1,0],
 				mdma:[1,0],
 				meth:[1,0],
@@ -144,16 +182,13 @@
 		},
 		keith:{
 			cocaine:0,
-			cannabis:0,
+			marijuana:0,
 			heroin:230,
 			mdma:0,
 			meth:320,
-			info:{
-				gang:0,
-			},
 			buyeffects:{
 				cocaine:[1,0],
-				cannabis:[1,0],
+				marijuana:[1,0],
 				heroin:[1,0],
 				mdma:[1,0],
 				meth:[1,0],
@@ -161,16 +196,13 @@
 		},
 		jesse:{
 			cocaine:0,
-			cannabis:20,
+			marijuana:20,
 			heroin:0,
 			mdma:0,
 			meth:290,
-			info:{
-				gang:0,
-			},
 			buyeffects:{
 				cocaine:[1,0],
-				cannabis:[1,0],
+				marijuana:[1,0],
 				heroin:[1,0],
 				mdma:[1,0],
 				meth:[1,0],
@@ -178,20 +210,17 @@
 		},
 		thewalt:{
 			quality:{
-				cannabis:0.75,
+				marijuana:0.75,
 				mdma:0.2,
 			},
 			cocaine:0,
-			cannabis:20,
+			marijuana:20,
 			heroin:0,
 			mdma:35,
 			meth:0,
-			info:{
-				gang:0,
-			},
 			buyeffects:{
 				cocaine:[1,0],
-				cannabis:[1,0],
+				marijuana:[1,0],
 				heroin:[1,0],
 				mdma:[1,0],
 				meth:[1,0],
@@ -199,16 +228,13 @@
 		},
 		sizzle:{
 			cocaine:0,
-			cannabis:0,
+			marijuana:0,
 			heroin:0,
 			mdma:0,
 			meth:290,
-			info:{
-				gang:0,
-			},
 			buyeffects:{
 				cocaine:[1,0],
-				cannabis:[1,0],
+				marijuana:[1,0],
 				heroin:[1,0],
 				mdma:[1,0],
 				meth:[1,0],
@@ -218,7 +244,7 @@
 	
 	tx={
 		cocaine:[0,0,0,0],
-		cannabis:[0,0,0,0],
+		marijuana:[0,0,0,0],
 		heroin:[0,0,0,0],
 		mdma:[0,0,0,0],
 		meth:[0,0,0,0],
@@ -228,22 +254,23 @@
 	
 	function buy(drug, quantity, dealr){
 		if(dealer[dealr][drug]==0){
-			console.log("Illegit -- Dealer does not sell " + drug)
+			alert("Illegit -- Dealer does not sell " + drug);
 		}else{
 			if(quantity<0.25){
-				console.log("too small amount");
+				alert("too small amount");
 				return;
 			}else{
 				if(dealer[dealr][drug]!=0){
 					if(checkfunds(Math.abs(dealer[dealr][drug] * quantity)) == true){
-						quantity = round(quantity)
-						inv[drug] += quantity
-						money -= round((dealer[dealr].buyeffects[drug][0] * dealer[dealr][drug] * quantity) + dealer[dealr].buyeffects[drug][1])
-						++tx[drug][0]
-						tx[drug][2] += quantity
-						adjustPrices();
+						quantity = round(quantity);
+						inv[drug] += quantity;
+						money -= round((dealer[dealr].buyeffects[drug][0] * dealer[dealr][drug] * quantity) + dealer[dealr].buyeffects[drug][1]);
+						++tx[drug][0];
+						tx[drug][2] += quantity;
+						// adjustPrices();
+						updateMsg = dealr.toUpperCase() + ': Thanks for buying ' + quantity + 'g of ' + randomSlang(drug);
 					}else{
-						console.log("Not enough money to buy " + quantity + " grams of " + drug);
+						alert("Not enough money to buy " + quantity + " grams of " + drug);
 					}
 				}
 			}
@@ -266,8 +293,8 @@
 			ppg:155.0,
 		},
 		
-		cannabis:{
-			name:'cannabis',
+		marijuana:{
+			name:'marijuana',
 			slang:['weed', 'pot', 'mary jane', 'dope', 'bud', 'ganja', 'mj'],
 			drugid:1,
 			addictn:45,
@@ -312,23 +339,30 @@
 
 	buyeffects={
 		cocaine:[1,0],
-		cannabis:[1,0],
+		marijuana:[1,0],
 		heroin:[1,0],
 		mdma:[1,0],
 		meth:[1,0],
 	}
 	
 	// adds object buyeffects that records the effect on prices
-	
+	/* 
 	function adjustPrices(){
 		
-		var adjust = [0,0,0,0,0]
+		var adjust = [];
 		
 		adjust[0] = Math.floor(tx.cocaine[3]/10);
-		adjust[1] = Math.floor(tx.cannabis[3]/12);
+		adjust[1] = Math.floor(tx.marijuana[3]/12);
 		adjust[2] = Math.floor(tx.heroin[3]/13);
 		adjust[3] = Math.floor(tx.meth[3]/15);
 		adjust[4] = Math.floor(tx.mdma[3]/12);
+		
+		for(var c=0;c<(adjust.length);c++){
+			adjust[c]=1-adjust[c];
+			if(adjust[c]<=0.6){
+				adjust[c]=0.6;
+			}
+		}
 		
 		var lode=Object.keys(dealer)
 		var lodel=lode.length
@@ -336,11 +370,11 @@
 		var lodl=lod.length
 		for(var i=0;i<lodel;i++){
 			for(var e=0;e<lodl;e++){
-				dealer[lode[i]][lod[e]]=0
+				dealer[lode[i]].buyeffects[lod[e]]=adjust[e]
 			}
 		}
 		
-	}
+	} */
 	
 	// adjust prices from data from tx ledger. buying more means prices are cheaper. some really really shitty code to prevent it from being OP, but ill clean that shit up l8r
 	
@@ -350,7 +384,7 @@
 	
 	inv = {
 		cocaine:0.0,
-		cannabis:0.0,
+		marijuana:0.0,
 		heroin:0.0,
 		mdma:0.0,
 		meth:0.0,
@@ -360,7 +394,7 @@
 
 	effects = {
 		cocained:0,
-		cannabisd:0,
+		marijuanad:0,
 		heroind:0,
 		mdmad:0,
 		methd:0,
@@ -386,7 +420,7 @@
 	
 	function tickTime(){
 		mmyyyy++
-		console.log("Ticked time by 1 month");
+		alert("Ticked time by 1 month");
 		getRealTime();
 		doHunger();
 		time = setTimeout(tickTime, 60000)
@@ -423,10 +457,10 @@
 		}else if(month=11){
 			monthstring = "November"
 		}else{
-			console.log("Error defining month.")
+			alert("Error defining month.")
 		}
 		
-		console.log("Now it's " + monthstring + " " + year.toString())
+		alert("Now it's " + monthstring + " " + year.toString())
 	}
 	
 	// works with mmyyyy in such a way that if mmyyyy==14, then it would turn into Feb 2013 (because this shit starts in 2012)
@@ -470,7 +504,7 @@
 	function dealerdis(args, amt){
 		
 		if(Object.prototype.toString.apply(amt) != "[object Number]"){
-			console.log("invalid amount argument")
+			alert("invalid amount argument")
 			return;
 		}
 		
@@ -524,10 +558,10 @@
 			hungersurvive = 0
 		}
 		
-		console.log("HUNGER: " + checkHunger() + " --- SURVIVE: " + hungersurvive);
+		alert("HUNGER: " + checkHunger() + " --- SURVIVE: " + hungersurvive);
 		
 		if(hungersurvive==0){
-			console.log("You died.");
+			alert("You died.");
 			if(confirm("Load Previous Save?")==true){
 				load();
 			}
@@ -538,31 +572,27 @@
 		$.jStorage.set('inv', inv);
 		$.jStorage.set('money', money);
 		$.jStorage.set('buyeffects', buyeffects);
-		$.jStorage.set('effects', effects);
+		$.jStorage.set('dealer', dealer);
 		$.jStorage.set('mmyyyy', mmyyyy);
 		$.jStorage.set('tx', tx);
-		$.jStorage.set('bought', bought);
-		$.jStorage.set('sold', sold);
 	}
 	
 	//saves relevant data
 
 	function load(){
 		inv = $.jStorage.get('inv');
-		buyeffects = $.jStorage.get('buyeffects');
 		money = $.jStorage.get('money');
 		effects = $.jStorage.get('effects');
 		mmyyyy = $.jStorage.get('mmyyyy');
 		tx = $.jStorage.get('tx');
-		bought = $.jStorage.get('bought');
-		sold = $.jStorage.get('sold');
+		dealer = $.jStorage.get('dealer');
 	}
 	
 		// loads saved data
 	
 	function loadsavedstats(arg){
 		
-		console.log($.jStorage.get(arg))
+		alert($.jStorage.get(arg))
 				
 	}
 	
